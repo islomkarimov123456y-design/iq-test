@@ -2,180 +2,84 @@
 <html lang="uz">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Koinot mavzusidagi professional IQ test platformasi. O'z bilimingizni sinab ko'ring.">
-    <meta name="keywords" content="IQ test, koinot, matematika, fizika, mantiq, ingliz tili">
-    <title>Galactic IQ Ultra Pro - 1000 Lines Mastery</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>OMEGA IQ PRO | Galactic Interface</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&family=Syncopate:wght@700&display=swap" rel="stylesheet">
 </head>
 <body>
-
-    <div id="space-background">
-        <div class="star-layer-1"></div>
-        <div class="star-layer-2"></div>
+    <div id="hyper-space">
+        <div class="stars-layer"></div>
         <div class="nebula-red"></div>
-        <div class="meteor-container">
-            <div class="meteor-1"></div>
-            <div class="meteor-2"></div>
-            <div class="meteor-3"></div>
-            <div class="meteor-4"></div>
-            <div class="meteor-5"></div>
-        </div>
+        <div class="meteor-shower"></div>
     </div>
 
-    <header class="main-navbar">
-        <div class="nav-container">
-            <div class="hamburger-trigger" id="menuBtn">
-                <span class="line-1"></span>
-                <span class="line-2"></span>
-                <span class="line-3"></span>
-            </div>
-            <div class="brand-identity">
-                <h1 class="logo-main">SPACE IQ PRO</h1>
-            </div>
+    <header class="omega-nav">
+        <div class="menu-trigger" onclick="toggleOmegaMenu()">
+            <span></span><span></span><span></span>
         </div>
+        <div class="omega-logo">SPACE IQ <span class="v-tag">v5.5</span></div>
     </header>
 
-    <aside id="sidebar-navigation" class="sidebar-hidden">
-        <nav class="sidebar-content">
-            <div class="sidebar-header">
-                <h2>MENYU</h2>
-                <button class="close-sidebar">&times;</button>
+    <aside id="omega-sidebar" class="omega-sidebar">
+        <div class="sidebar-inner">
+            <h2 class="side-title">SOZLAMALAR</h2>
+            <div class="lang-selector">
+                <button class="lang-btn" onclick="applyLang('uz')">🇺🇿 O'ZBEK</button>
+                <button class="lang-btn" onclick="applyLang('en')">🇺🇸 ENGLISH</button>
+                <button class="lang-btn" onclick="applyLang('ru')">🇷🇺 РУССКИЙ</button>
             </div>
-            
-            <ul class="language-switcher">
-                <li class="lang-item">
-                    <button onclick="changeLang('uz')" class="btn-lang active">
-                        <span class="flag-icon">🇺🇿</span> O'zbek Tili
-                    </button>
-                </li>
-                <li class="lang-item">
-                    <button onclick="changeLang('en')" class="btn-lang">
-                        <span class="flag-icon">🇺🇸</span> English Language
-                    </button>
-                </li>
-                <li class="lang-item">
-                    <button onclick="changeLang('ru')" class="btn-lang">
-                        <span class="flag-icon">🇷🇺</span> Русский язык
-                    </button>
-                </li>
-            </ul>
-
-            <div class="sidebar-footer">
-                <p>Build v5.0.1</p>
-                <p>Status: Ready</p>
+            <div class="system-status">
+                <p>Engine: <span class="neon-green">ACTIVE</span></p>
+                <p>Security: <span class="neon-red">ENCRYPTED</span></p>
             </div>
-        </nav>
+        </div>
     </aside>
 
-    <main class="viewport-main">
-        <section id="auth-screen" class="screen-visible">
-            <div class="auth-card-container">
-                <div class="auth-header">
-                    <h2 class="neon-text">KIRISH</h2>
-                    <p class="auth-subtitle">Koinot sarguzashtingizni boshlang</p>
-                </div>
-
-                <div class="auth-body">
-                    <div id="loading-spinner" class="spinner-hidden"></div>
-                    
-                    <div class="social-methods">
-                        <div class="method-wrapper">
-                            <button class="btn-auth google" id="googleBtn">
-                                <img src="google-icon.svg" alt="G">
-                                <span>Google orqali kirish</span>
-                            </button>
-                        </div>
-                        
-                        <div class="method-wrapper">
-                            <button class="btn-auth facebook" id="fbBtn">
-                                <img src="fb-icon.svg" alt="F">
-                                <span>Facebook orqali kirish</span>
-                            </button>
-                        </div>
-
-                        <div class="method-wrapper">
-                            <button class="btn-auth whatsapp" id="waBtn">
-                                <img src="wa-icon.svg" alt="W">
-                                <span>WhatsApp orqali kirish</span>
-                            </button>
-                        </div>
+    <main id="view-port">
+        <section id="auth-view" class="active-view">
+            <div class="omega-card">
+                <h1 class="glitch-text" data-text="KIRISH">KIRISH</h1>
+                <div class="auth-methods">
+                    <button class="method-btn g-btn" onclick="initLogin('Google')">
+                        <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="G">
+                        Google orqali
+                    </button>
+                    <button class="method-btn f-btn" onclick="initLogin('Facebook')">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/b/b8/2021_Facebook_icon.svg" alt="F">
+                        Facebook orqali
+                    </button>
+                    <div class="input-wrapper">
+                        <input type="tel" id="user-phone" placeholder="+998 90 123 45 67">
+                        <div class="input-glow"></div>
                     </div>
-
-                    <div class="divider-text">
-                        <span>YOKI</span>
-                    </div>
-
-                    <div class="phone-method">
-                        <label for="phoneNumber">Telefon raqamingiz:</label>
-                        <input type="tel" id="phoneNumber" placeholder="+998 90 123 45 67">
-                        <button class="btn-auth phone-submit" id="phoneSubmit">
-                            DAVOM ETISH
-                        </button>
-                    </div>
-                </div>
-
-                <div class="auth-footer">
-                    <p>Ro'yxatdan o'tish orqali <a href="#">Shartlarga</a> rozilik berasiz.</p>
+                    <button class="method-btn phone-btn" onclick="initLogin('Phone')">
+                        NOMER BILAN KIRISH
+                    </button>
                 </div>
             </div>
         </section>
 
-        <section id="quiz-database" class="hidden-database">
-            
-            <div class="cat-math">
-                <div class="q-item" id="math-q1">
-                    <p class="question">1. 15 * 15 necha bo'ladi?</p>
-                    <div class="options">
-                        <button class="opt">225</button>
-                        <button class="opt">215</button>
-                        <button class="opt">235</button>
-                        <button class="opt">250</button>
-                    </div>
-                </div>
-                </div>
-
-            <div class="cat-logic">
-                <div class="q-item" id="logic-q1">
-                    <p class="question">1. Qaysi og'irroq: 1kg paxtami yoki 1kg temir?</p>
-                    <div class="options">
-                        <button class="opt">Paxta</button>
-                        <button class="opt">Temir</button>
-                        <button class="opt">Ikkalasi teng</button>
-                        <button class="opt">Vazni yo'q</button>
-                    </div>
-                </div>
-                </div>
-
+        <section id="category-view" class="hidden">
+            <h2 class="view-header">YO'NALISHNI TANLANG</h2>
+            <div class="category-grid" id="cat-grid"></div>
         </section>
 
-        <section id="terms-section" class="hidden">
-            <article class="legal-text">
-                <h3>Xizmat ko'rsatish shartlari</h3>
-                <p>1. Ushbu ilova faqat o'quv va ko'ngilochar maqsadlarda foydalaniladi.</p>
-                <p>2. IQ natijalari rasmiy psixologik xulosa emas.</p>
-                </article>
+        <section id="quiz-view" class="hidden">
+            <div class="top-stats">
+                <div class="stat">TIME: <span id="timer-val" class="neon-red">120</span>s</div>
+                <div class="stat">IQ: <span id="iq-val" class="neon-red">100</span></div>
+            </div>
+            <div id="question-container" class="q-container"></div>
+            <div id="options-grid" class="o-grid"></div>
         </section>
-
     </main>
 
-    <section id="result-screen" class="hidden">
-        <div class="certificate-frame">
-            <h2>TABRIKLAYMIZ!</h2>
-            <div class="score-display">
-                <span id="scoreValue">120</span>
-                <small>IQ POINTS</small>
-            </div>
-            <p id="rankDescription">Sizning intellektual darajangiz: YUQORI</p>
-            <button class="share-btn">Telegramda ulashish</button>
-        </div>
-    </section>
+    <div id="global-loader" class="hidden">
+        <div class="omega-spinner"></div>
+    </div>
 
-    <footer class="system-footer">
-        <div class="status-indicator">
-            <span class="pulse-dot"></span> Server: Online
-        </div>
-    </footer>
-
+    <script src="index.js"></script>
 </body>
 </html>
 

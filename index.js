@@ -1,168 +1,72 @@
-/* ==========================================================
-  SECTION 1: GLOBAL STATE & CORE ENGINE (Line 1-150)
-  ========================================================== */
-const AppState = {
-    user: {
-        id: null,
-        phone: '',
-        lang: 'uz',
-        isAuth: false
-    },
-    quiz: {
-        currentCategory: null,
-        questions: [],
-        currentIndex: 0,
-        score: 100,
-        correctAnswers: 0,
-        startTime: null,
-        timer: null
-    },
-    ui: {
-        screens: ['auth-screen', 'subject-screen', 'quiz-screen', 'result-screen'],
-        sidebarActive: false
-    }
-};
-
-/** * Space Sound Engine 
- * Har bir tugma uchun maxsus tovushlar generatori
- */
-const SoundFX = {
-    ctx: new (window.AudioContext || window.webkitAudioContext)(),
-    play(freq, type = 'sine', duration = 0.2) {
-        const osc = this.ctx.createOscillator();
-        const g = this.ctx.createGain();
-        osc.type = type;
-        osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
-        osc.connect(g);
-        g.connect(this.ctx.destination);
-        osc.start();
-        g.gain.exponentialRampToValueAtTime(0.00001, this.ctx.currentTime + duration);
-        osc.stop(this.ctx.currentTime + duration);
-    },
-    click() { this.play(600, 'triangle', 0.1); },
-    success() { this.play(880, 'sine', 0.5); },
-    error() { this.play(220, 'sawtooth', 0.5); }
-};
-
-/* ==========================================================
-  SECTION 2: MULTILINGUAL DATABASE (Line 151-350)
-  Har bir til uchun alohida lug'atlar
-  ========================================================== */
-const Dictionary = {
-    uz: {
-        welcome: "Xush kelibsiz",
-        login: "KIRISH",
-        enterPhone: "Telefon raqamingizni kiriting",
-        subjects: "YO'NALISHLARNI TANLANG",
-        math: "Matematika", phys: "Fizika", logic: "Mantiq",
-        rankDaho: "Siz dahosiz!",
-        rankNormal: "Natijangiz o'rtacha"
-    },
-    en: {
-        welcome: "Welcome to Space IQ",
-        login: "LOGIN",
-        enterPhone: "Enter your phone number",
-        subjects: "SELECT SUBJECT",
-        math: "Mathematics", phys: "Physics", logic: "Logic",
-        rankDaho: "You are a Genius!",
-        rankNormal: "Average score"
-    },
-    ru: {
-        welcome: "Добро пожаловать",
-        login: "ВХОД",
-        enterPhone: "Введите ваш номер",
-        subjects: "ВЫБЕРИТЕ ПРЕДМЕТ",
-        math: "Математика", phys: "Физика", logic: "Логика",
-        rankDaho: "Вы гений!",
-        rankNormal: "Средний результат"
-    }
-};
-
-/* ==========================================================
-  SECTION 3: EXTENDED QUESTIONS DATABASE (Line 351-750)
-  Kodning eng katta qismi - Har bir fan uchun 50 tadan savol
-  ========================================================== */
-const QuestionBank = {
+/* OMEGA CORE DATABASE */
+const IQ_DATABASE = {
     math: [
-        { q: "12 * 12 + 10?", a: "154", o: ["144", "154", "164", "134"] },
-        { q: "f(x)=x^2 bo'lsa f'(2)=?", a: "4", o: ["2", "4", "0", "8"] },
-        // ... (Bu yerga 50 ta savol qo'shilsa kod hajmi 400 qatorga oshadi)
+        { q: "x^2 = 169, x = ?", a: "13", o: ["11", "12", "13", "14"] },
+        { q: "log10(100) = ?", a: "2", o: ["1", "2", "10", "100"] }
     ],
     logic: [
-        { q: "Qaysi kalla pishirilmaydi?", a: "Qovoq kalla", o: ["Kalla", "Qovoq kalla", "Go'sht", "Tovuq"] },
-        // ... (Bu yerga mantiqiy savollar bazasi)
+        { q: "Savol: Qaysi so'z hamma joyda bir xil yoziladi?", a: "Ism", o: ["Vaqt", "Ism", "Salom", "Dunyo"] }
     ]
 };
 
-/* ==========================================================
-  SECTION 4: CORE FUNCTIONS & UI LOGIC (Line 751-1000)
-  Saytning ishlash jarayoni (Logic)
-  ========================================================== */
+/* SYSTEM ENGINE */
+const Engine = {
+    score: 100,
+    idx: 0,
+    timer: null,
+    timeLeft: 120,
+    lang: 'uz'
+};
 
-/** Sidebar boshqaruvi */
-function toggleMenu() {
-    SoundFX.click();
-    const sidebar = document.getElementById('sidebar');
-    AppState.ui.sidebarActive = !AppState.ui.sidebarActive;
-    sidebar.classList.toggle('active');
+/* SIDEBAR CONTROLLER */
+function toggleOmegaMenu() {
+    document.getElementById('omega-sidebar').classList.toggle('active');
 }
 
-/** Ro'yxatdan o'tishni tekshirish (Validation) */
-async function processLogin(method) {
-    const phoneInput = document.getElementById('phone-number');
-    
-    if (method === 'Phone' && phoneInput.value.length < 9) {
-        showError("Raqam noto'g'ri!");
+/* LOGIN VALIDATION */
+async function initLogin(type) {
+    const loader = document.getElementById('global-loader');
+    const phone = document.getElementById('user-phone').value;
+
+    if(type === 'Phone' && phone.length < 9) {
+        alert("Raqam kiritilmadi!");
         return;
     }
 
-    SoundFX.click();
-    showLoader(true);
+    loader.classList.remove('hidden');
+    // Giper-yuklanish simulyatsiyasi
+    await new Promise(r => setTimeout(r, 1500));
     
-    // Server bilan aloqa simulyatsiyasi (1.5 sek)
-    await new Promise(res => setTimeout(res, 1500));
-    
-    showLoader(false);
-    switchScreen('subject-screen');
+    loader.classList.add('hidden');
+    document.getElementById('auth-view').classList.add('hidden');
+    document.getElementById('category-view').classList.remove('hidden');
+    renderCategories();
 }
 
-/** Ekranni almashtirish mantiqi */
-function switchScreen(screenId) {
-    AppState.ui.screens.forEach(id => {
-        document.getElementById(id).classList.add('hidden');
-    });
-    document.getElementById(screenId).classList.remove('hidden');
+/* UI RENDERERS */
+function renderCategories() {
+    const grid = document.getElementById('cat-grid');
+    grid.innerHTML = `
+        <div class="omega-card" onclick="startTest('math')">MATEMATIKA</div>
+        <div class="omega-card" onclick="startTest('logic')">MANTIQ</div>
+    `;
 }
 
-/** Testni boshlash va savollarni chiqarish */
-function startQuiz(category) {
-    AppState.quiz.currentCategory = category;
-    AppState.quiz.questions = [...QuestionBank[category]];
-    AppState.quiz.currentIndex = 0;
-    AppState.quiz.score = 100;
-    
-    switchScreen('quiz-screen');
-    renderQuestion();
-    startTimer();
+function startTest(cat) {
+    Engine.currentQuestions = IQ_DATABASE[cat];
+    document.getElementById('category-view').classList.add('hidden');
+    document.getElementById('quiz-view').classList.remove('hidden');
+    // Testni boshlash mantiqi bu yerda davom etadi...
 }
 
-/** Natijalarni tahlil qilish algoritmi */
-function finalizeResults() {
-    const finalIQ = AppState.quiz.score;
-    let rank = "";
-    
-    if (finalIQ >= 140) rank = Dictionary[AppState.user.lang].rankDaho;
-    else rank = Dictionary[AppState.user.lang].rankNormal;
-    
-    document.getElementById('final-score').innerText = finalIQ;
-    document.getElementById('rank-text').innerText = rank;
-    
-    switchScreen('result-screen');
-}
-
-// Boshlang'ich yuklanish
-window.onload = () => {
-    console.log("Galactic IQ Pro Initialized...");
-    // Koinot zarralarini yuklash mantiqi bu yerda davom etadi
+/* SOUND ENGINE */
+const playSFX = (f) => {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const o = ctx.createOscillator();
+    const g = ctx.createGain();
+    o.connect(g); g.connect(ctx.destination);
+    o.frequency.value = f; o.start();
+    g.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.5);
+    o.stop(ctx.currentTime + 0.5);
 };
-	
+
