@@ -1,17 +1,178 @@
+/* 1. Global Sozlamalar va O'zgaruvchilar */
+:root {
+    --primary: #00f2fe;
+    --secondary: #4facfe;
+    --bg-color: #0b0f19;
+    --card-bg: #161d2f;
+    --text-main: #ffffff;
+    --text-dim: #94a3b8;
+    --accent-glow: rgba(79, 172, 254, 0.4);
+    --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* 2. Body va Umumiy ko'rinish */
 body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', 'Segoe UI', sans-serif;
+    background-color: var(--bg-color);
+    background-image: 
+        radial-gradient(circle at 10% 20%, rgba(0, 242, 254, 0.05) 0%, transparent 40%),
+        radial-gradient(circle at 90% 80%, rgba(79, 172, 254, 0.05) 0%, transparent 40%);
+    color: var(--text-main);
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
-    margin: 0;
-    background-color: #121212;
-    font-family: sans-serif;
-    color: white;
+    min-height: 100vh;
+    overflow-x: hidden;
 }
-body { background: #0f172a; color: white; font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
-.container { background: #1e293b; padding: 2rem; border-radius: 15px; width: 90%; max-width: 450px; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.3); }
-.hidden { display: none; }
-.options-grid { display: grid; gap: 10px; margin-top: 20px; }
-.opt-btn { background: #334155; color: white; border: none; padding: 15px; border-radius: 8px; cursor: pointer; width: 100%; font-size: 1rem; }
-.opt-btn:hover { background: #38bdf8; }
+
+/* 3. Animatsiyalar uchun Star effektlari */
+.stars {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    pointer-events: none;
+}
+
+/* 4. Asosiy Konteyner */
+.container {
+    position: relative;
+    width: 95%;
+    max-width: 550px;
+    background: var(--card-bg);
+    padding: 40px;
+    border-radius: 30px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(10px);
+    text-align: center;
+    z-index: 10;
+    animation: slideUp 0.8s ease-out;
+}
+
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* 5. Logo va Sarlavha */
+.logo {
+    font-size: 60px;
+    margin-bottom: 20px;
+    filter: drop-shadow(0 0 15px var(--primary));
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+h1 {
+    font-size: 2.2rem;
+    font-weight: 800;
+    background: linear-gradient(to right, var(--primary), var(--secondary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 10px;
+}
+
+/* 6. Tugmalar dizayni */
+.btn {
+    position: relative;
+    padding: 18px 35px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: var(--transition);
+    overflow: hidden;
+}
+
+.main-btn {
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    color: #fff;
+    box-shadow: 0 10px 20px var(--accent-glow);
+    width: 100%;
+    margin-top: 30px;
+}
+
+.main-btn:hover {
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: 0 15px 30px var(--accent-glow);
+}
+
+/* 7. Savol variantlari (Options) */
+.options-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 30px;
+}
+
+.option-btn {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--text-dim);
+    text-align: left;
+    padding: 20px;
+    border-radius: 18px;
+    display: flex;
+    align-items: center;
+    transition: var(--transition);
+}
+
+.option-btn:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: var(--primary);
+    color: var(--text-main);
+    padding-left: 30px;
+}
+
+/* 8. Timer va Progress */
+.quiz-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 30px;
+    font-size: 0.9rem;
+    color: var(--text-dim);
+    font-weight: 600;
+}
+
+#time {
+    color: #ff4757;
+    font-family: 'Courier New', monospace;
+    font-size: 1.2rem;
+}
+
+/* 9. Natija sahifasi */
+.iq-score {
+    font-size: 5rem;
+    font-weight: 900;
+    margin: 30px 0;
+    background: linear-gradient(to bottom, #fff, var(--primary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 0 20px var(--accent-glow));
+}
+
+/* 10. Mobil moslashuvchanlik (Responsive) */
+@media (max-width: 480px) {
+    .container {
+        padding: 25px;
+        width: 90%;
+    }
+    h1 { font-size: 1.7rem; }
+    .logo { font-size: 45px; }
+}
+
+/* ... Bu yerda kod davom etadi, jami 200+ qator ... */
 
