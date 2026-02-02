@@ -3,50 +3,113 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Galaktika IQ - Kirish</title>
+    <title>Galaktika IQ - Professional Space Edition</title>
     <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="space-bg">
-        <div class="stars"></div>
-        <div class="twinkling"></div>
+    <div class="space-engine">
+        <div class="stars-layer"></div>
+        <div class="nebula-cloud"></div>
+        <div class="meteor-stream"></div>
     </div>
 
-    <div class="menu-wrapper">
-        <div class="hamburger" onclick="toggleMenu()">
-            <span></span><span></span><span></span>
-        </div>
-        <div id="sidebar" class="sidebar">
-            <h3>TILNI TANLANG</h3>
-            <button onclick="changeLang('uz')">🇺🇿 O'zbek Tili</button>
-            <button onclick="changeLang('en')">🇺🇸 English</button>
-            <button onclick="changeLang('ru')">🇷🇺 Русский язык</button>
-        </div>
-    </div>
-
-    <div class="main-container">
-        <div class="auth-card">
-            <h1 class="neon-title">KIRISH</h1>
-            <div class="auth-buttons">
-                <button class="auth-btn google" onclick="enterApp()">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg"> Google orqali kirish
-                </button>
-                <button class="auth-btn facebook" onclick="enterApp()">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/0/05/Facebook_Logo_(2019).png"> Facebook orqali kirish
-                </button>
-                <button class="auth-btn whatsapp" onclick="enterApp()">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg"> WhatsApp orqali kirish
-                </button>
-                <div class="phone-input-group">
-                    <input type="tel" placeholder="+998 90 123 45 67">
-                    <button class="auth-btn phone" onclick="enterApp()">Nomer orqali kirish</button>
-                </div>
+    <aside id="sidebar" class="sidebar">
+        <div class="sidebar-inner">
+            <button class="close-menu" onclick="toggleMenu()">×</button>
+            <h2 id="side-title">SOZLAMALAR</h2>
+            <div class="glow-line"></div>
+            <p id="choose-lang">Tilni tanlang:</p>
+            <div class="lang-grid">
+                <button class="lang-option" onclick="changeLang('uz')">🇺🇿 O'zbek</button>
+                <button class="lang-option" onclick="changeLang('en')">🇺🇸 English</button>
+                <button class="lang-option" onclick="changeLang('ru')">🇷🇺 Русский</button>
+            </div>
+            <div class="sidebar-footer">
+                <p>Version 4.5 Stable</p>
+                <p>© 2026 Islom Karimov Design</p>
             </div>
         </div>
-    </div>
+    </aside>
 
-    <div id="quiz-part" class="hidden">
+    <header class="navbar">
+        <div class="hamburger-btn" onclick="toggleMenu()">
+            <span></span><span></span><span></span>
         </div>
+        <div class="logo-text">SPACE IQ <span class="pro-tag">PRO</span></div>
+    </header>
+
+    <main class="content-wrapper">
+        <section id="auth-screen" class="active-screen">
+            <div class="login-card">
+                <h1 id="main-header" class="neon-glow-text">KIRISH</h1>
+                <div class="social-login">
+                    <button class="login-btn google" onclick="handleAuth('Google')">
+                        <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google">
+                        <span id="txt-google">Google orqali kirish</span>
+                    </button>
+                    <button class="login-btn facebook" onclick="handleAuth('Facebook')">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/0/05/Facebook_Logo_(2019).png" alt="FB">
+                        <span id="txt-fb">Facebook orqali kirish</span>
+                    </button>
+                    <button class="login-btn whatsapp" onclick="handleAuth('WhatsApp')">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WA">
+                        <span id="txt-wa">WhatsApp orqali kirish</span>
+                    </button>
+                    <div class="separator"><span id="txt-or">yoki</span></div>
+                    <div class="phone-box">
+                        <input type="tel" id="user-phone" placeholder="+998 90 123 45 67">
+                        <button class="login-btn phone-btn" onclick="handleAuth('Phone')">
+                            <span id="txt-phone">Nomer orqali kirish</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="subject-screen" class="hidden">
+            <h2 id="subj-header" class="neon-glow-text">YO'NALISHLAR</h2>
+            <div class="subject-layout">
+                <div class="subject-card" onclick="initQuiz('math')">
+                    <div class="icon-wrap">🧮</div>
+                    <h3 id="label-math">Matematika</h3>
+                </div>
+                <div class="subject-card" onclick="initQuiz('phys')">
+                    <div class="icon-wrap">⚡</div>
+                    <h3 id="label-phys">Fizika</h3>
+                </div>
+                <div class="subject-card" onclick="initQuiz('eng')">
+                    <div class="icon-wrap">🇬🇧</div>
+                    <h3 id="label-eng">Ingliz Tili</h3>
+                </div>
+                <div class="subject-card" onclick="initQuiz('logic')">
+                    <div class="icon-wrap">🧠</div>
+                    <h3 id="label-logic">Mantiq</h3>
+                </div>
+            </div>
+        </section>
+
+        <section id="quiz-screen" class="hidden">
+            <div class="stats-bar">
+                <div class="stat-item timer">⏱ <span id="timer-val">02:00</span></div>
+                <div class="stat-item iq">IQ: <span id="iq-val">100</span></div>
+            </div>
+            <div id="fx-layer" class="fx-indicator"></div>
+            <div class="question-container">
+                <p id="q-text">Savol yuklanmoqda...</p>
+            </div>
+            <div id="options-container" class="options-grid"></div>
+        </section>
+
+        <section id="result-screen" class="hidden">
+            <h2 id="res-header">TEST YAKUNLANDI</h2>
+            <div class="result-box">
+                <div class="score-number" id="final-iq">100</div>
+                <p id="rank-text">Sizning IQ darajangiz: <span id="rank-val">Normal</span></p>
+            </div>
+            <button class="retry-btn" onclick="location.reload()">BOSHQATTAN</button>
+        </section>
+    </main>
 
     <script src="index.js"></script>
 </body>

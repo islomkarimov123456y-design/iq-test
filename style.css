@@ -1,132 +1,155 @@
+/* 1. Global Sozlamalar */
 :root {
-    --neon-red: #ff0000;
-    --dark-red: #4a0000;
-    --bg-black: #050000;
+    --neon-red: #ff3131;
+    --neon-blue: #00d2ff;
+    --dark: #020205;
+    --glass: rgba(0, 0, 0, 0.85);
+    --border: 2px solid #ff3131;
+    --red-glow: 0 0 15px rgba(255, 49, 49, 0.7);
 }
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
-    margin: 0;
-    padding: 0;
-    background: var(--bg-black);
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: var(--dark);
+    font-family: 'Poppins', sans-serif;
     color: white;
     overflow: hidden;
-}
-
-/* Kosmos foni */
-.space-bg {
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    z-index: -1;
-    background: radial-gradient(circle at center, #1a0000 0%, #000 100%);
-}
-
-.stars {
-    position: absolute;
-    width: 100%; height: 100%;
-    background: transparent url('https://www.transparenttextures.com/patterns/stardust.png') repeat;
-    opacity: 0.5;
-}
-
-/* Markaziy Oyna */
-.main-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
     height: 100vh;
 }
 
-.auth-card {
-    background: rgba(0, 0, 0, 0.8);
+/* 2. Space Engine fon */
+.space-engine {
+    position: fixed;
+    width: 100%; height: 100%;
+    z-index: -1;
+    background: radial-gradient(circle at bottom, #2a0000 0%, #000 100%);
+}
+
+.stars-layer {
+    width: 100%; height: 100%;
+    background: transparent url('https://www.transparenttextures.com/patterns/stardust.png') repeat;
+    animation: moveStars 180s linear infinite;
+    opacity: 0.3;
+}
+
+@keyframes moveStars {
+    from { background-position: 0 0; }
+    to { background-position: 0 -2000px; }
+}
+
+.nebula-cloud {
+    position: fixed; top: 30%; left: 20%;
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(255, 0, 0, 0.1) 0%, transparent 70%);
+    filter: blur(60px); animation: pulse 8s infinite alternate;
+}
+
+@keyframes pulse {
+    from { transform: scale(1); opacity: 0.4; }
+    to { transform: scale(1.4); opacity: 0.7; }
+}
+
+/* 3. Sidebar (To'liq yashirin) */
+.sidebar {
+    position: fixed; top: 0; left: -320px;
+    width: 290px; height: 100%;
+    background: rgba(0,0,0,0.98);
+    border-right: var(--border);
+    transition: 0.5s cubic-bezier(0.85, 0, 0.15, 1);
+    z-index: 2000;
+    padding: 40px 20px;
+}
+
+.sidebar.active { left: 0; }
+
+.lang-option {
+    width: 100%; padding: 15px; margin: 10px 0;
+    background: rgba(255, 49, 49, 0.1);
+    border: 1px solid var(--neon-red);
+    color: white; border-radius: 12px;
+    cursor: pointer; transition: 0.3s;
+}
+
+.lang-option:hover { background: var(--neon-red); color: black; }
+
+/* 4. Auth Card & Neon */
+.login-card {
+    background: var(--glass);
     border: 3px solid var(--neon-red);
-    box-shadow: 0 0 30px var(--dark-red), inset 0 0 15px var(--dark-red);
-    padding: 50px;
-    border-radius: 20px;
-    text-align: center;
-    width: 90%;
-    max-width: 450px;
-    animation: glow 2s infinite alternate;
+    border-radius: 30px;
+    padding: 40px; width: 92%; max-width: 450px;
+    margin: 60px auto; text-align: center;
+    box-shadow: var(--red-glow); backdrop-filter: blur(15px);
 }
 
-@keyframes glow {
-    from { box-shadow: 0 0 20px var(--dark-red); }
-    to { box-shadow: 0 0 40px var(--neon-red); }
-}
-
-.neon-title {
-    font-size: 3rem;
-    color: white;
+.neon-glow-text {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 2.5rem; letter-spacing: 4px;
     text-shadow: 0 0 10px var(--neon-red), 0 0 20px var(--neon-red);
     margin-bottom: 30px;
 }
 
-/* Tugmalar */
-.auth-buttons {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
-
-.auth-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    padding: 15px;
-    border: none;
-    border-radius: 10px;
-    font-size: 1rem;
-    font-weight: bold;
-    cursor: pointer;
+/* 5. Buttons */
+.login-btn {
+    width: 100%; padding: 15px; margin-bottom: 12px;
+    border-radius: 14px; border: none;
+    font-weight: bold; cursor: pointer;
+    display: flex; align-items: center; justify-content: center; gap: 15px;
     transition: 0.3s;
-    background: white;
-    color: black;
 }
 
-.auth-btn img { width: 20px; }
+.google { background: white; color: #333; }
+.facebook { background: #1877f2; color: white; }
+.whatsapp { background: #25d366; color: white; }
+.phone-btn { background: var(--neon-red); color: white; }
 
-.auth-btn:hover {
-    transform: scale(1.05);
-    background: var(--neon-red);
-    color: white;
+.login-btn img { width: 24px; }
+.login-btn:hover { transform: scale(1.04); box-shadow: 0 5px 15px rgba(255,0,0,0.3); }
+
+/* 6. Subject Grid */
+.subject-layout {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 20px; padding: 20px; max-width: 600px; margin: auto;
 }
 
-.phone-input-group input {
-    width: 100%;
-    padding: 12px;
-    margin-bottom: 10px;
-    border-radius: 8px;
+.subject-card {
+    background: rgba(255,49,49,0.05);
     border: 1px solid var(--neon-red);
-    background: black;
-    color: white;
+    padding: 30px 15px; border-radius: 20px;
+    cursor: pointer; text-align: center; transition: 0.4s;
 }
 
-/* Sidebar */
-.hamburger {
-    position: fixed; top: 20px; left: 20px;
-    cursor: pointer; z-index: 100;
-}
-.hamburger span {
-    display: block; width: 30px; height: 4px;
-    background: var(--neon-red); margin: 6px;
+.subject-card:hover { transform: translateY(-10px); background: var(--neon-red); color: black; }
+
+/* 7. Quiz & Timer */
+.stats-bar {
+    display: flex; justify-content: space-around;
+    padding: 20px; font-family: 'Orbitron';
 }
 
-.sidebar {
-    position: fixed; top: 0; left: -250px;
-    width: 250px; height: 100%;
-    background: rgba(10, 0, 0, 0.95);
-    border-right: 2px solid var(--neon-red);
-    transition: 0.4s;
-    padding: 60px 20px;
+.question-container {
+    background: rgba(255,255,255,0.05);
+    padding: 30px; border-radius: 15px;
+    margin: 20px; font-size: 1.2rem; border-left: 5px solid var(--neon-red);
 }
 
-.sidebar.active { left: 0; }
-.sidebar button {
-    width: 100%; padding: 10px; margin: 10px 0;
-    background: transparent; border: 1px solid var(--neon-red);
-    color: white; cursor: pointer;
+.options-grid { display: grid; gap: 15px; padding: 20px; }
+
+.hidden { display: none !important; }
+
+/* Meteorlar */
+.meteor-stream::after {
+    content: ""; position: absolute;
+    width: 2px; height: 80px;
+    background: linear-gradient(to bottom, transparent, var(--neon-red));
+    left: 80%; top: -10%; transform: rotate(45deg);
+    animation: meteor 4s infinite linear;
 }
 
-.hidden { display: none; }
-	
+@keyframes meteor {
+    0% { top: -20%; left: 110%; opacity: 1; }
+    15% { top: 120%; left: -10%; opacity: 0; }
+    100% { top: 120%; left: -10%; opacity: 0; }
+}
+
