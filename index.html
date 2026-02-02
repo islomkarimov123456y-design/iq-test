@@ -10,25 +10,22 @@
     <div class="container">
         <div id="start-screen">
             <h1>Xalqaro IQ Test</h1>
-            <p>Mantiqiy salohiyatingizni tekshirib ko'ring.</p>
-            <button class="opt-btn" onclick="startQuiz()">Testni Boshlash</button>
+            <p>Mantiqiy salohiyatingizni tekshiring.</p>
+            <button class="opt-btn" onclick="startQuiz()">Boshlash</button>
         </div>
-
         <div id="quiz-screen" class="hidden">
             <div class="top-info">
                 <div class="timer">Vaqt: <span id="time">02:00</span></div>
-                <div class="iq-badge">Savol: <span id="q-num">1</span>/10</div>
+                <div>Savol: <span id="q-num">1</span>/10</div>
             </div>
-            <h2 id="q-text">Savol yuklanmoqda...</h2>
+            <h2 id="q-text">Savol...</h2>
             <div id="q-options" class="options-grid"></div>
             <div id="feedback"></div>
         </div>
-
         <div id="result-screen" class="hidden">
-            <h2>Sizning IQ natijangiz:</h2>
-            <div id="final-iq">0</div>
+            <h2>Natija: <span id="final-iq">0</span> IQ</h2>
             <p id="iq-msg"></p>
-            <button class="opt-btn" onclick="location.reload()">Qayta urinish</button>
+            <button class="opt-btn" onclick="location.reload()">Qayta</button>
         </div>
     </div>
     <script src="index.js"></script>

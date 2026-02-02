@@ -1,39 +1,7 @@
-:root {
-    --bg: #0f172a;
-    --card: #1e293b;
-    --accent: #38bdf8;
-}
-body {
-    background-color: var(--bg);
-    color: white;
-    font-family: sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
-}
-.container {
-    background: var(--card);
-    padding: 2rem;
-    border-radius: 15px;
-    width: 90%;
-    max-width: 500px;
-    text-align: center;
-}
+body { background: #0f172a; color: white; font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+.container { background: #1e293b; padding: 2rem; border-radius: 15px; width: 90%; max-width: 450px; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.3); }
 .hidden { display: none; }
-.top-info { display: flex; justify-content: space-between; margin-bottom: 20px; }
-.timer { color: #fbbf24; font-weight: bold; }
 .options-grid { display: grid; gap: 10px; margin-top: 20px; }
-.opt-btn {
-    background: #334155;
-    color: white;
-    border: 2px solid transparent;
-    padding: 15px;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: 0.3s;
-}
-.opt-btn:hover { border-color: var(--accent); background: #475569; }
-#final-iq { font-size: 4rem; font-weight: bold; color: var(--accent); margin: 20px 0; }
+.opt-btn { background: #334155; color: white; border: none; padding: 15px; border-radius: 8px; cursor: pointer; width: 100%; font-size: 1rem; }
+.opt-btn:hover { background: #38bdf8; }
 
