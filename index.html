@@ -3,43 +3,70 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mega IQ Test Platformasi</title>
+    <title>Cosmo IQ Platform</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@300;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="animated-bg"></div>
+    <div class="space-bg">
+        <div class="stars"></div>
+        <div class="rocket">🚀</div>
+        <div class="ufo">🛸</div>
+    </div>
+
+    <div id="sidebar" class="sidebar">
+        <button class="close-btn" onclick="toggleMenu()">×</button>
+        <h3 id="settings-title">Sozlamalar</h3>
+        <div class="lang-box">
+            <button onclick="changeLang('uz')">🇺🇿 O'zbek</button>
+            <button onclick="changeLang('en')">🇺🇸 English</button>
+            <button onclick="changeLang('ru')">🇷🇺 Русский</button>
+        </div>
+    </div>
+
+    <div class="header-nav">
+        <div class="menu-icon" onclick="toggleMenu()">
+            <span></span><span></span><span></span>
+        </div>
+    </div>
+
     <div class="container">
-        <div id="home-screen" class="screen">
-            <h1 class="glow-text">IQ TEST PLATFORMA</h1>
-            <p>Yo'nalishni tanlang va bilimingizni sinang:</p>
+        <div id="login-screen" class="screen">
+            <h1 id="main-title" class="glow-text">GALAKTIKA IQ</h1>
+            <p id="login-text">Davom etish uchun tizimga kiring</p>
+            <button class="google-btn" onclick="enterSite()">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" width="20">
+                Google bilan kirish
+            </button>
+        </div>
+
+        <div id="home-screen" class="screen hidden">
+            <h2 id="select-text">Yo'nalishni tanlang</h2>
             <div class="subject-grid">
-                <button class="subj-btn" onclick="selectSubject('matematika')">🧮 Matematika</button>
-                <button class="subj-btn" onclick="selectSubject('fizika')">⚡ Fizika</button>
-                <button class="subj-btn" onclick="selectSubject('ingliz')">🇬🇧 Ingliz Tili</button>
-                <button class="subj-btn" onclick="selectSubject('mantiq')">🧠 Mantiq</button>
+                <button class="subj-btn" onclick="selectSubject('math')">🧮 Matematika</button>
+                <button class="subj-btn" onclick="selectSubject('phys')">⚡ Fizika</button>
+                <button class="subj-btn" onclick="selectSubject('eng')">🇬🇧 Ingliz Tili</button>
+                <button class="subj-btn" onclick="selectSubject('logic')">🧠 Mantiq</button>
             </div>
         </div>
 
         <div id="quiz-screen" class="screen hidden">
-            <div class="header">
-                <div class="timer-box">⏱ <span id="time">02:00</span></div>
-                <div class="score-box">IQ: <span id="iq-count">100</span></div>
+            <div class="quiz-info">
+                <div id="timer">⏱ <span id="time">02:00</span></div>
+                <div id="iq-display">IQ: <span id="iq-count">100</span></div>
             </div>
-            <div id="feedback-icon" class="feedback-anim"></div>
-            <div class="question-container">
-                <h2 id="question-text">Savol yuklanmoqda...</h2>
-                <div id="options" class="options-list"></div>
-            </div>
+            <div id="feedback" class="feedback-circle"></div>
+            <h2 id="question-text">Savol...</h2>
+            <div id="options" class="options-grid"></div>
         </div>
 
         <div id="result-screen" class="screen hidden">
-            <h2 class="glow-text">TEST YAKUNLANDI</h2>
-            <div class="final-score" id="final-iq">0</div>
-            <p id="result-msg"></p>
-            <button class="restart-btn" onclick="location.reload()">ASOSIY MENYU</button>
+            <h2 id="finish-text">Test Yakunlandi</h2>
+            <div class="final-iq" id="final-iq">0</div>
+            <button class="restart-btn" onclick="location.reload()">Asosiy Menyu</button>
         </div>
     </div>
+
     <script src="index.js"></script>
 </body>
 </html>

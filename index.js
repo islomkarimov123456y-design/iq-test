@@ -1,53 +1,51 @@
-const allQuestions = {
-    matematika: [
-        { q: "√144 + √81 nechaga teng?", a: "21", opt: ["20", "21", "22", "19"] },
-        { q: "5x + 10 = 50 bo'lsa, x = ?", a: "8", opt: ["6", "7", "8", "10"] },
-        // ... yana 8 ta qo'shish mumkin
+const questions = {
+    math: [
+        { q: "√144 + √81 = ?", a: "21", opt: ["20", "21", "22", "19"] },
+        { q: "5x + 10 = 50, x = ?", a: "8", opt: ["6", "7", "8", "9"] }
     ],
-    fizika: [
-        { q: "Kuch birligi nima?", a: "Nyuton", opt: ["Vatt", "Joul", "Nyuton", "Paskal"] },
-        { q: "Yorug'lik tezligi qancha? (km/s)", a: "300,000", opt: ["150,000", "300,000", "450,000", "100,000"] },
+    phys: [
+        { q: "Nyuton qaysi kuch birligi?", a: "Kuch", opt: ["Energiya", "Kuch", "Bosim", "Tezlik"] }
     ],
-    ingliz: [
-        { q: "Choose the correct: 'I ___ a student.'", a: "am", opt: ["is", "are", "am", "be"] },
-        { q: "Past form of 'Go'?", a: "went", opt: ["goes", "gone", "went", "going"] },
+    eng: [
+        { q: "Opposite of 'Hot'?", a: "Cold", opt: ["Warm", "Cold", "Ice", "Sun"] }
     ],
-    mantiq: [
-        { q: "Qaysi oyda 28 kun bor?", a: "Hammasida", opt: ["Fevral", "Hammasida", "Yanvar", "Hech biri"] },
-        { q: "Daraxtda 10 qush bor edi, ovchi 1 tasini otdi. Nechta qoldi?", a: "0", opt: ["9", "1", "0", "8"] },
+    logic: [
+        { q: "Daraxtda 10 qush bor, 1 tasi otildi. Nechtasi qoldi?", a: "0", opt: ["9", "1", "0", "8"] }
     ]
 };
 
-// Ovozli effektlar (Brauzerning o'zidan sintez qilamiz)
-const playSound = (isCorrect) => {
-    const context = new (window.AudioContext || window.webkitAudioContext)();
-    const osc = context.createOscillator();
-    const gain = context.createGain();
-    
-    osc.connect(gain);
-    gain.connect(context.destination);
-    
-    if(isCorrect) {
-        osc.frequency.setValueAtTime(880, context.currentTime); // Baland ovoz
-        osc.frequency.exponentialRampToValueAtTime(1200, context.currentTime + 0.1);
-    } else {
-        osc.frequency.setValueAtTime(220, context.currentTime); // Past g'o'ng'illash
-        osc.frequency.exponentialRampToValueAtTime(110, context.currentTime + 0.2);
-    }
-    
-    osc.start();
-    gain.gain.exponentialRampToValueAtTime(0.0001, context.currentTime + 0.3);
-    osc.stop(context.currentTime + 0.3);
+const langData = {
+    uz: { title: "GALAKTIKA IQ", login: "Davom etish uchun tizimga kiring", select: "Yo'nalishni tanlang", settings: "Sozlamalar" },
+    en: { title: "GALAXY IQ", login: "Sign in to continue", select: "Select Subject", settings: "Settings" },
+    ru: { title: "ГАЛАКТИКА IQ", login: "Войдите, чтобы продолжить", select: "Выберите предмет", settings: "Настройки" }
 };
 
-let currentSubject = [];
-let idx = 0;
+let currentSubj = [];
+let qIdx = 0;
 let score = 100;
 let timer;
 let timeLeft = 120;
 
-function selectSubject(subj) {
-    currentSubject = allQuestions[subj];
+function toggleMenu() {
+    document.getElementById('sidebar').classList.toggle('active');
+}
+
+function changeLang(lang) {
+    const d = langData[lang];
+    document.getElementById('main-title').innerText = d.title;
+    document.getElementById('login-text').innerText = d.login;
+    document.getElementById('select-text').innerText = d.select;
+    document.getElementById('settings-title').innerText = d.settings;
+    toggleMenu();
+}
+
+function enterSite() {
+    document.getElementById('login-screen').classList.add('hidden');
+    document.getElementById('home-screen').classList.remove('hidden');
+}
+
+function selectSubject(s) {
+    currentSubj = questions[s];
     document.getElementById('home-screen').classList.add('hidden');
     document.getElementById('quiz-screen').classList.remove('hidden');
     startTimer();
@@ -65,44 +63,53 @@ function startTimer() {
 }
 
 function renderQuestion() {
-    const q = currentSubject[idx];
+    const q = currentSubj[qIdx];
     document.getElementById('question-text').innerText = q.q;
     const optDiv = document.getElementById('options');
     optDiv.innerHTML = '';
     q.opt.forEach(o => {
-        const b = document.createElement('button');
-        b.className = 'opt-btn';
-        b.innerText = o;
-        b.onclick = () => check(o);
-        optDiv.appendChild(b);
+        const btn = document.createElement('button');
+        btn.className = 'subj-btn';
+        btn.innerText = o;
+        btn.onclick = () => check(o);
+        optDiv.appendChild(btn);
     });
 }
 
-function check(answer) {
-    const correct = currentSubject[idx].a;
-    const feedback = document.getElementById('feedback-icon');
-    
-    if(answer === correct) {
+function check(ans) {
+    const correct = currentSubj[qIdx].a;
+    const feedback = document.getElementById('feedback');
+    if(ans === correct) {
         score += 15;
         feedback.innerHTML = '✔';
-        feedback.className = 'feedback-anim show-correct';
-        playSound(true);
+        feedback.style.background = '#2ecc71';
+        playSound(880);
     } else {
         score -= 10;
         feedback.innerHTML = '✖';
-        feedback.className = 'feedback-anim show-wrong';
-        playSound(false);
+        feedback.style.background = '#e74c3c';
+        playSound(220);
     }
-    
     document.getElementById('iq-count').innerText = score;
-    
-    // Animatsiyani tozalash
     setTimeout(() => {
-        feedback.className = 'feedback-anim';
-        idx++;
-        if(idx < currentSubject.length) renderQuestion();
+        feedback.innerHTML = '';
+        feedback.style.background = 'transparent';
+        qIdx++;
+        if(qIdx < currentSubj.length) renderQuestion();
         else endTest();
     }, 600);
+}
+
+function playSound(freq) {
+    const ctx = new AudioContext();
+    const osc = ctx.createOscillator();
+    const g = ctx.createGain();
+    osc.frequency.setValueAtTime(freq, ctx.currentTime);
+    osc.connect(g);
+    g.connect(ctx.destination);
+    osc.start();
+    g.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.5);
+    osc.stop(ctx.currentTime + 0.5);
 }
 
 function endTest() {
@@ -110,6 +117,5 @@ function endTest() {
     document.getElementById('quiz-screen').classList.add('hidden');
     document.getElementById('result-screen').classList.remove('hidden');
     document.getElementById('final-iq').innerText = score;
-    document.getElementById('result-msg').innerText = score > 120 ? "Siz daho ekansiz!" : "Yaxshi natija!";
 }
 

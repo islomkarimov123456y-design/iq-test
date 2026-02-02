@@ -1,135 +1,133 @@
 :root {
     --neon-blue: #00d2ff;
     --neon-purple: #9d50bb;
-    --correct: #2ecc71;
-    --wrong: #e74c3c;
-    --dark-bg: #050505;
+    --bg-dark: #020205;
 }
 
 body {
     margin: 0;
-    font-family: 'Poppins', sans-serif;
-    background: var(--dark-bg);
     color: white;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
+    font-family: 'Orbitron', sans-serif;
+    background: var(--bg-dark);
     overflow: hidden;
 }
 
-.animated-bg {
+/* Kosmos Animatsiyasi */
+.space-bg {
     position: fixed;
-    width: 200%;
-    height: 200%;
-    background: linear-gradient(45deg, #0f0c29, #302b63, #24243e);
+    width: 100%;
+    height: 100%;
     z-index: -1;
-    animation: gradientMove 15s infinite linear;
+    background: radial-gradient(circle at center, #1b2735 0%, #090a0f 100%);
 }
 
-@keyframes gradientMove {
-    0% { transform: translate(-25%, -25%) rotate(0deg); }
-    100% { transform: translate(-25%, -25%) rotate(360deg); }
+.stars {
+    width: 100%;
+    height: 100%;
+    background: transparent url('https://www.transparenttextures.com/patterns/stardust.png');
+    animation: starsMove 100s linear infinite;
 }
 
-.container {
-    background: rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(15px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    padding: 40px;
-    border-radius: 30px;
-    width: 90%;
-    max-width: 600px;
-    text-align: center;
-    box-shadow: 0 0 50px rgba(0,0,0,0.8);
+@keyframes starsMove {
+    from { background-position: 0 0; }
+    to { background-position: 0 -2000px; }
 }
 
-.glow-text {
-    font-family: 'Orbitron', sans-serif;
-    background: linear-gradient(to right, var(--neon-blue), var(--neon-purple));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    font-size: 2.5rem;
-    margin-bottom: 30px;
+.rocket { position: absolute; bottom: -100px; left: 10%; font-size: 50px; animation: fly 12s infinite; }
+.ufo { position: absolute; top: 20%; right: -100px; font-size: 40px; animation: ufoFly 18s infinite; }
+
+@keyframes fly { 0% { bottom: -100px; opacity: 1; } 100% { bottom: 120%; opacity: 0; } }
+@keyframes ufoFly { 0% { right: -100px; } 100% { right: 120%; } }
+
+/* Sidebar */
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: -280px;
+    width: 250px;
+    height: 100%;
+    background: rgba(0,0,0,0.95);
+    border-right: 2px solid var(--neon-blue);
+    transition: 0.4s;
+    z-index: 1000;
+    padding: 30px;
 }
 
-.subject-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 20px;
-}
+.sidebar.active { left: 0; }
 
-.subj-btn {
-    background: rgba(255,255,255,0.1);
-    border: 2px solid transparent;
-    color: white;
-    padding: 20px;
-    border-radius: 15px;
+.menu-icon {
+    position: fixed;
+    top: 20px;
+    left: 20px;
     cursor: pointer;
-    font-size: 1.1rem;
+    z-index: 1001;
+}
+
+.menu-icon span {
+    display: block;
+    width: 25px;
+    height: 3px;
+    background: var(--neon-blue);
+    margin: 5px;
     transition: 0.3s;
 }
 
-.subj-btn:hover {
-    border-color: var(--neon-blue);
-    background: rgba(0, 210, 255, 0.1);
-    transform: translateY(-5px);
+/* Tugmalar va Kartalar */
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
 }
+
+.screen {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    padding: 40px;
+    border-radius: 25px;
+    border: 1px solid var(--neon-blue);
+    text-align: center;
+    width: 90%;
+    max-width: 500px;
+}
+
+.google-btn {
+    background: white;
+    color: black;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 30px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 20px auto;
+}
+
+.subj-btn {
+    background: rgba(0, 210, 255, 0.1);
+    color: white;
+    border: 1px solid var(--neon-blue);
+    padding: 15px;
+    border-radius: 12px;
+    cursor: pointer;
+    margin: 10px;
+    transition: 0.3s;
+}
+
+.subj-btn:hover { background: var(--neon-blue); color: black; }
 
 .hidden { display: none; }
 
-/* Feedback Animation (Yashil/Qizil doira) */
-.feedback-anim {
-    width: 100px;
-    height: 100px;
+.feedback-circle {
+    width: 60px;
+    height: 60px;
     border-radius: 50%;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%) scale(0);
-    z-index: 100;
+    margin: 10px auto;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 50px;
-    font-weight: bold;
-}
-
-.show-correct { animation: popGreen 0.6s forwards; }
-.show-wrong { animation: popRed 0.6s forwards; }
-
-@keyframes popGreen {
-    0% { transform: translate(-50%, -50%) scale(0); background: var(--correct); opacity: 1; }
-    80% { transform: translate(-50%, -50%) scale(1.5); opacity: 0.8; }
-    100% { transform: translate(-50%, -50%) scale(2); opacity: 0; }
-}
-
-@keyframes popRed {
-    0% { transform: translate(-50%, -50%) scale(0); background: var(--wrong); opacity: 1; }
-    80% { transform: translate(-50%, -50%) scale(1.5); opacity: 0.8; }
-    100% { transform: translate(-50%, -50%) scale(2); opacity: 0; }
-}
-
-.options-list {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    margin-top: 30px;
-}
-
-.opt-btn {
-    background: rgba(255,255,255,0.05);
-    border: 1px solid rgba(255,255,255,0.2);
-    color: white;
-    padding: 15px;
-    border-radius: 10px;
-    cursor: pointer;
-    transition: 0.2s;
-}
-
-.final-score {
-    font-size: 5rem;
-    font-family: 'Orbitron';
-    color: var(--neon-blue);
+    font-size: 30px;
+    transition: 0.3s;
 }
 
