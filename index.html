@@ -3,115 +3,179 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Galaktika IQ - Professional Space Edition</title>
-    <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <meta name="description" content="Koinot mavzusidagi professional IQ test platformasi. O'z bilimingizni sinab ko'ring.">
+    <meta name="keywords" content="IQ test, koinot, matematika, fizika, mantiq, ingliz tili">
+    <title>Galactic IQ Ultra Pro - 1000 Lines Mastery</title>
 </head>
 <body>
-    <div class="space-engine">
-        <div class="stars-layer"></div>
-        <div class="nebula-cloud"></div>
-        <div class="meteor-stream"></div>
+
+    <div id="space-background">
+        <div class="star-layer-1"></div>
+        <div class="star-layer-2"></div>
+        <div class="nebula-red"></div>
+        <div class="meteor-container">
+            <div class="meteor-1"></div>
+            <div class="meteor-2"></div>
+            <div class="meteor-3"></div>
+            <div class="meteor-4"></div>
+            <div class="meteor-5"></div>
+        </div>
     </div>
 
-    <aside id="sidebar" class="sidebar">
-        <div class="sidebar-inner">
-            <button class="close-menu" onclick="toggleMenu()">×</button>
-            <h2 id="side-title">SOZLAMALAR</h2>
-            <div class="glow-line"></div>
-            <p id="choose-lang">Tilni tanlang:</p>
-            <div class="lang-grid">
-                <button class="lang-option" onclick="changeLang('uz')">🇺🇿 O'zbek</button>
-                <button class="lang-option" onclick="changeLang('en')">🇺🇸 English</button>
-                <button class="lang-option" onclick="changeLang('ru')">🇷🇺 Русский</button>
+    <header class="main-navbar">
+        <div class="nav-container">
+            <div class="hamburger-trigger" id="menuBtn">
+                <span class="line-1"></span>
+                <span class="line-2"></span>
+                <span class="line-3"></span>
             </div>
-            <div class="sidebar-footer">
-                <p>Version 4.5 Stable</p>
-                <p>© 2026 Islom Karimov Design</p>
+            <div class="brand-identity">
+                <h1 class="logo-main">SPACE IQ PRO</h1>
             </div>
         </div>
-    </aside>
-
-    <header class="navbar">
-        <div class="hamburger-btn" onclick="toggleMenu()">
-            <span></span><span></span><span></span>
-        </div>
-        <div class="logo-text">SPACE IQ <span class="pro-tag">PRO</span></div>
     </header>
 
-    <main class="content-wrapper">
-        <section id="auth-screen" class="active-screen">
-            <div class="login-card">
-                <h1 id="main-header" class="neon-glow-text">KIRISH</h1>
-                <div class="social-login">
-                    <button class="login-btn google" onclick="handleAuth('Google')">
-                        <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google">
-                        <span id="txt-google">Google orqali kirish</span>
+    <aside id="sidebar-navigation" class="sidebar-hidden">
+        <nav class="sidebar-content">
+            <div class="sidebar-header">
+                <h2>MENYU</h2>
+                <button class="close-sidebar">&times;</button>
+            </div>
+            
+            <ul class="language-switcher">
+                <li class="lang-item">
+                    <button onclick="changeLang('uz')" class="btn-lang active">
+                        <span class="flag-icon">🇺🇿</span> O'zbek Tili
                     </button>
-                    <button class="login-btn facebook" onclick="handleAuth('Facebook')">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/0/05/Facebook_Logo_(2019).png" alt="FB">
-                        <span id="txt-fb">Facebook orqali kirish</span>
+                </li>
+                <li class="lang-item">
+                    <button onclick="changeLang('en')" class="btn-lang">
+                        <span class="flag-icon">🇺🇸</span> English Language
                     </button>
-                    <button class="login-btn whatsapp" onclick="handleAuth('WhatsApp')">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WA">
-                        <span id="txt-wa">WhatsApp orqali kirish</span>
+                </li>
+                <li class="lang-item">
+                    <button onclick="changeLang('ru')" class="btn-lang">
+                        <span class="flag-icon">🇷🇺</span> Русский язык
                     </button>
-                    <div class="separator"><span id="txt-or">yoki</span></div>
-                    <div class="phone-box">
-                        <input type="tel" id="user-phone" placeholder="+998 90 123 45 67">
-                        <button class="login-btn phone-btn" onclick="handleAuth('Phone')">
-                            <span id="txt-phone">Nomer orqali kirish</span>
+                </li>
+            </ul>
+
+            <div class="sidebar-footer">
+                <p>Build v5.0.1</p>
+                <p>Status: Ready</p>
+            </div>
+        </nav>
+    </aside>
+
+    <main class="viewport-main">
+        <section id="auth-screen" class="screen-visible">
+            <div class="auth-card-container">
+                <div class="auth-header">
+                    <h2 class="neon-text">KIRISH</h2>
+                    <p class="auth-subtitle">Koinot sarguzashtingizni boshlang</p>
+                </div>
+
+                <div class="auth-body">
+                    <div id="loading-spinner" class="spinner-hidden"></div>
+                    
+                    <div class="social-methods">
+                        <div class="method-wrapper">
+                            <button class="btn-auth google" id="googleBtn">
+                                <img src="google-icon.svg" alt="G">
+                                <span>Google orqali kirish</span>
+                            </button>
+                        </div>
+                        
+                        <div class="method-wrapper">
+                            <button class="btn-auth facebook" id="fbBtn">
+                                <img src="fb-icon.svg" alt="F">
+                                <span>Facebook orqali kirish</span>
+                            </button>
+                        </div>
+
+                        <div class="method-wrapper">
+                            <button class="btn-auth whatsapp" id="waBtn">
+                                <img src="wa-icon.svg" alt="W">
+                                <span>WhatsApp orqali kirish</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="divider-text">
+                        <span>YOKI</span>
+                    </div>
+
+                    <div class="phone-method">
+                        <label for="phoneNumber">Telefon raqamingiz:</label>
+                        <input type="tel" id="phoneNumber" placeholder="+998 90 123 45 67">
+                        <button class="btn-auth phone-submit" id="phoneSubmit">
+                            DAVOM ETISH
                         </button>
                     </div>
                 </div>
-            </div>
-        </section>
 
-        <section id="subject-screen" class="hidden">
-            <h2 id="subj-header" class="neon-glow-text">YO'NALISHLAR</h2>
-            <div class="subject-layout">
-                <div class="subject-card" onclick="initQuiz('math')">
-                    <div class="icon-wrap">🧮</div>
-                    <h3 id="label-math">Matematika</h3>
-                </div>
-                <div class="subject-card" onclick="initQuiz('phys')">
-                    <div class="icon-wrap">⚡</div>
-                    <h3 id="label-phys">Fizika</h3>
-                </div>
-                <div class="subject-card" onclick="initQuiz('eng')">
-                    <div class="icon-wrap">🇬🇧</div>
-                    <h3 id="label-eng">Ingliz Tili</h3>
-                </div>
-                <div class="subject-card" onclick="initQuiz('logic')">
-                    <div class="icon-wrap">🧠</div>
-                    <h3 id="label-logic">Mantiq</h3>
+                <div class="auth-footer">
+                    <p>Ro'yxatdan o'tish orqali <a href="#">Shartlarga</a> rozilik berasiz.</p>
                 </div>
             </div>
         </section>
 
-        <section id="quiz-screen" class="hidden">
-            <div class="stats-bar">
-                <div class="stat-item timer">⏱ <span id="timer-val">02:00</span></div>
-                <div class="stat-item iq">IQ: <span id="iq-val">100</span></div>
-            </div>
-            <div id="fx-layer" class="fx-indicator"></div>
-            <div class="question-container">
-                <p id="q-text">Savol yuklanmoqda...</p>
-            </div>
-            <div id="options-container" class="options-grid"></div>
+        <section id="quiz-database" class="hidden-database">
+            
+            <div class="cat-math">
+                <div class="q-item" id="math-q1">
+                    <p class="question">1. 15 * 15 necha bo'ladi?</p>
+                    <div class="options">
+                        <button class="opt">225</button>
+                        <button class="opt">215</button>
+                        <button class="opt">235</button>
+                        <button class="opt">250</button>
+                    </div>
+                </div>
+                </div>
+
+            <div class="cat-logic">
+                <div class="q-item" id="logic-q1">
+                    <p class="question">1. Qaysi og'irroq: 1kg paxtami yoki 1kg temir?</p>
+                    <div class="options">
+                        <button class="opt">Paxta</button>
+                        <button class="opt">Temir</button>
+                        <button class="opt">Ikkalasi teng</button>
+                        <button class="opt">Vazni yo'q</button>
+                    </div>
+                </div>
+                </div>
+
         </section>
 
-        <section id="result-screen" class="hidden">
-            <h2 id="res-header">TEST YAKUNLANDI</h2>
-            <div class="result-box">
-                <div class="score-number" id="final-iq">100</div>
-                <p id="rank-text">Sizning IQ darajangiz: <span id="rank-val">Normal</span></p>
-            </div>
-            <button class="retry-btn" onclick="location.reload()">BOSHQATTAN</button>
+        <section id="terms-section" class="hidden">
+            <article class="legal-text">
+                <h3>Xizmat ko'rsatish shartlari</h3>
+                <p>1. Ushbu ilova faqat o'quv va ko'ngilochar maqsadlarda foydalaniladi.</p>
+                <p>2. IQ natijalari rasmiy psixologik xulosa emas.</p>
+                </article>
         </section>
+
     </main>
 
-    <script src="index.js"></script>
+    <section id="result-screen" class="hidden">
+        <div class="certificate-frame">
+            <h2>TABRIKLAYMIZ!</h2>
+            <div class="score-display">
+                <span id="scoreValue">120</span>
+                <small>IQ POINTS</small>
+            </div>
+            <p id="rankDescription">Sizning intellektual darajangiz: YUQORI</p>
+            <button class="share-btn">Telegramda ulashish</button>
+        </div>
+    </section>
+
+    <footer class="system-footer">
+        <div class="status-indicator">
+            <span class="pulse-dot"></span> Server: Online
+        </div>
+    </footer>
+
 </body>
 </html>
 
