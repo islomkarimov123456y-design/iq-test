@@ -1,85 +1,28 @@
-<!DOCTYPE html>
-<html lang="uz">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>OMEGA IQ PRO | Galactic Interface</title>
-    <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&family=Syncopate:wght@700&display=swap" rel="stylesheet">
-</head>
-<body>
-    <div id="hyper-space">
-        <div class="stars-layer"></div>
-        <div class="nebula-red"></div>
-        <div class="meteor-shower"></div>
+<section id="quiz-view" class="hidden">
+    <div class="telemetry-bar">
+        <div class="t-item">MISSION: <span class="neon-red">IQ_EVAL_v5</span></div>
+        <div class="t-item">ENGINE_TEMP: <span class="neon-red pulse">STABLE</span></div>
+        <div class="t-item">TIME_REMAINING: <span id="timer-val">120.00</span>s</div>
     </div>
 
-    <header class="omega-nav">
-        <div class="menu-trigger" onclick="toggleOmegaMenu()">
-            <span></span><span></span><span></span>
+    <div class="iq-matrix-box">
+        <div class="matrix-header">
+            <h3 id="question-text">Analyzing Neural Pattern...</h3>
+            <span class="complexity-tag">ELITE LEVEL</span>
         </div>
-        <div class="omega-logo">SPACE IQ <span class="v-tag">v5.5</span></div>
-    </header>
-
-    <aside id="omega-sidebar" class="omega-sidebar">
-        <div class="sidebar-inner">
-            <h2 class="side-title">SOZLAMALAR</h2>
-            <div class="lang-selector">
-                <button class="lang-btn" onclick="applyLang('uz')">🇺🇿 O'ZBEK</button>
-                <button class="lang-btn" onclick="applyLang('en')">🇺🇸 ENGLISH</button>
-                <button class="lang-btn" onclick="applyLang('ru')">🇷🇺 РУССКИЙ</button>
+        
+        <div id="pattern-display" class="pattern-visual">
             </div>
-            <div class="system-status">
-                <p>Engine: <span class="neon-green">ACTIVE</span></p>
-                <p>Security: <span class="neon-red">ENCRYPTED</span></p>
+
+        <div id="options-grid" class="omega-options-grid">
             </div>
-        </div>
-    </aside>
-
-    <main id="view-port">
-        <section id="auth-view" class="active-view">
-            <div class="omega-card">
-                <h1 class="glitch-text" data-text="KIRISH">KIRISH</h1>
-                <div class="auth-methods">
-                    <button class="method-btn g-btn" onclick="initLogin('Google')">
-                        <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="G">
-                        Google orqali
-                    </button>
-                    <button class="method-btn f-btn" onclick="initLogin('Facebook')">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/b/b8/2021_Facebook_icon.svg" alt="F">
-                        Facebook orqali
-                    </button>
-                    <div class="input-wrapper">
-                        <input type="tel" id="user-phone" placeholder="+998 90 123 45 67">
-                        <div class="input-glow"></div>
-                    </div>
-                    <button class="method-btn phone-btn" onclick="initLogin('Phone')">
-                        NOMER BILAN KIRISH
-                    </button>
-                </div>
-            </div>
-        </section>
-
-        <section id="category-view" class="hidden">
-            <h2 class="view-header">YO'NALISHNI TANLANG</h2>
-            <div class="category-grid" id="cat-grid"></div>
-        </section>
-
-        <section id="quiz-view" class="hidden">
-            <div class="top-stats">
-                <div class="stat">TIME: <span id="timer-val" class="neon-red">120</span>s</div>
-                <div class="stat">IQ: <span id="iq-val" class="neon-red">100</span></div>
-            </div>
-            <div id="question-container" class="q-container"></div>
-            <div id="options-grid" class="o-grid"></div>
-        </section>
-    </main>
-
-    <div id="global-loader" class="hidden">
-        <div class="omega-spinner"></div>
     </div>
 
-    <script src="index.js"></script>
-</body>
-</html>
+    <div class="iq-progress-container">
+        <div class="progress-label">NEURAL SYNC: <span id="progress-pct">0%</span></div>
+        <div class="progress-track">
+            <div id="p-fill" class="progress-fill-omega"></div>
+        </div>
+    </div>
+</section>
 

@@ -1,72 +1,44 @@
-/* OMEGA CORE DATABASE */
-const IQ_DATABASE = {
-    math: [
-        { q: "x^2 = 169, x = ?", a: "13", o: ["11", "12", "13", "14"] },
-        { q: "log10(100) = ?", a: "2", o: ["1", "2", "10", "100"] }
-    ],
-    logic: [
-        { q: "Savol: Qaysi so'z hamma joyda bir xil yoziladi?", a: "Ism", o: ["Vaqt", "Ism", "Salom", "Dunyo"] }
-    ]
-};
-
-/* SYSTEM ENGINE */
-const Engine = {
-    score: 100,
-    idx: 0,
-    timer: null,
-    timeLeft: 120,
-    lang: 'uz'
-};
-
-/* SIDEBAR CONTROLLER */
-function toggleOmegaMenu() {
-    document.getElementById('omega-sidebar').classList.toggle('active');
-}
-
-/* LOGIN VALIDATION */
-async function initLogin(type) {
-    const loader = document.getElementById('global-loader');
-    const phone = document.getElementById('user-phone').value;
-
-    if(type === 'Phone' && phone.length < 9) {
-        alert("Raqam kiritilmadi!");
-        return;
-    }
-
-    loader.classList.remove('hidden');
-    // Giper-yuklanish simulyatsiyasi
-    await new Promise(r => setTimeout(r, 1500));
+/* OMEGA COLLAB ENGINE */
+const CollabEngine = {
+    totalPoints: 0,
+    startTime: null,
     
-    loader.classList.add('hidden');
-    document.getElementById('auth-view').classList.add('hidden');
-    document.getElementById('category-view').classList.remove('hidden');
-    renderCategories();
-}
+    // Mensa uslubidagi professional savollar
+    questions: [
+        { 
+            q: "Matrix: 2, 6, 12, 20, ?", 
+            a: "30", 
+            o: ["24", "28", "30", "36"],
+            hint: "Step increase: +4, +6, +8..." 
+        },
+        { 
+            q: "Logic: All Red are Stars. All Stars are Space. Are Red in Space?", 
+            a: "Yes", 
+            o: ["Yes", "No", "Maybe", "None"],
+            hint: "Syllogism rule" 
+        }
+    ],
 
-/* UI RENDERERS */
-function renderCategories() {
-    const grid = document.getElementById('cat-grid');
-    grid.innerHTML = `
-        <div class="omega-card" onclick="startTest('math')">MATEMATIKA</div>
-        <div class="omega-card" onclick="startTest('logic')">MANTIQ</div>
-    `;
-}
-
-function startTest(cat) {
-    Engine.currentQuestions = IQ_DATABASE[cat];
-    document.getElementById('category-view').classList.add('hidden');
-    document.getElementById('quiz-view').classList.remove('hidden');
-    // Testni boshlash mantiqi bu yerda davom etadi...
-}
-
-/* SOUND ENGINE */
-const playSFX = (f) => {
-    const ctx = new (window.AudioContext || window.webkitAudioContext)();
-    const o = ctx.createOscillator();
-    const g = ctx.createGain();
-    o.connect(g); g.connect(ctx.destination);
-    o.frequency.value = f; o.start();
-    g.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.5);
-    o.stop(ctx.currentTime + 0.5);
+    // IQ hisoblash algoritmi (Time + Accuracy)
+    calculateIQ(correctAnswers, totalTimeTaken) {
+        let baseIQ = 100;
+        let accuracyBonus = correctAnswers * 10;
+        let speedBonus = Math.max(0, (120 - totalTimeTaken) * 0.25);
+        
+        let finalIQ = baseIQ + accuracyBonus + speedBonus;
+        
+        // Elite status check
+        return {
+            iq: finalIQ.toFixed(0),
+            rank: finalIQ > 135 ? "ELITE NEURAL LINK" : "STANDARD SYNC"
+        };
+    }
 };
+
+/* Progressni yangilash funksiyasi */
+function updateNeuralSync(current, total) {
+    const pct = (current / total) * 100;
+    document.getElementById('p-fill').style.width = pct + '%';
+    document.getElementById('progress-pct').innerText = pct.toFixed(0) + '%';
+}
 
