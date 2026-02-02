@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pro IQ Test - Xalqaro Daraja</title>
+    <style>
+        :root {
+            --bg: #0f172a; --card: #1e293b; --accent: #10b981; --error: #ef4444; --text: #f8fafc;
+        }
+        body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; overflow: hidden; }
+        .container { background: var(--card); width: 90%; max-width: 500px; padding: 30px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); position: relative; text-align: center; }
+        
+        .top-info { display: flex; justify-content: space-between; margin-bottom: 20px; font-weight: bold; }
+        .timer { color: #fbbf24; font-size: 1.2rem; }
+        .iq-badge { background: var(--accent); padding: 5px 12px; border-radius: 10px; }
+
+        .question { font-size: 1.3rem; margin-bottom: 25px; min-height: 80px; }
+        .options { display: grid; gap: 12px; }
+        .opt-btn { background: #334155; border: 2px solid transparent; color: white; padding: 15px; border-radius: 10px; cursor: pointer; transition: 0.2s; font-size: 1rem; }
+        .opt-btn:hover { background: #475569; border-color: var(--accent); }
+
+        /* Effektlar (Yashil/Qizil dumaloq) */
+        #feedback { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); display: none; z-index: 10; }
+        .circle { width: 100px; height: 100px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 50px; color: white; animation: pop 0.5s ease; }
+        .correct { background: var(--accent); }
+        .wrong { background: var(--error); }
+
+        @keyframes pop { 0% { transform: scale(0); } 80% { transform: scale(1.2); } 100% { transform: scale(1); } }
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div id="feedback"></div>
+
+    <div id="start-screen">
+        <h1 style="color: var(--accent);">Pro IQ Sinovi</h1>
+        <p>Xalqaro standartdagi mantiqiy savollar.<br>Har bir savolga <b>2 daqiqa</b> beriladi.</p>
+        <button class="opt-btn" style="background:var(--accent); width: 100%; margin-top: 20px;" onclick="startQuiz()">Testni Boshlash</button>
+    </div>
+
+    <div id="quiz-screen" class="hidden">
+        <div class="top-info">
+            <div class="timer">⏱ <span id="time">02:00</span></div>
+            <div class="iq-badge">Savol: <span id="q-num">1</span>/10</div>
+        </div>
+        <div class="question" id="q-text">Yuklanmoqda...</div>
+        <div id="q-options" class="options"></div>
+    </div>
+
+    <div id="result-screen" class="hidden">
+        <h2>Sizning IQ natijangiz:</h2>
+        <div style="font-size: 4rem; font-weight: bold; color: var(--accent); margin: 20px 0;" id="final-iq">100</div>
+        <p id="iq-msg"></p>
+        <button class="opt-btn" style="width: 100%;" onclick="location.reload()">Qaytadan urinish</button>
+    </div>
+</div>
+
+<script>
+    const questions = [
+        { q: "7, 26, 63, 124, ? Keyingi sonni toping.", a: ["215", "217", "210", "196"], c: 0 },
+        { q: "Finger is to Hand bo'lsa, Leaf is to ... ?", a: ["Tree", "Twig", "Flower", "Root"], c: 1 },
+        { q: "Vakuumda metall shar va pat bir xil balandlikdan tashlansa:", a: ["Shar tez tushadi", "Pat tez tushadi", "Ikkisi teng tushadi", "Vaznga bog'liq"], c: 2 },
+        { q: "Agar hamma 'A'lar 'B' bo'lsa va hamma 'B'lar 'C' bo'lsa, u holda hamma 'A'lar 'C'dir.", a: ["To'g'ri", "Noto'g'ri", "Noma'lum", "Xato mantiq"], c: 0 },
+        { q: "1, 1, 2, 3, 5, 8, 13, ? Keyingi sonni toping.", a: ["18", "21", "25", "34"], c: 1 },
+        { q: "Quyidagilardan qaysi biri qolganlariga o'xshamaydi?", a: ["Olma", "Pomidor", "Sabzi", "Nok"], c: 2 },
+        { q: "Soat 3:15 da soat va minut millari orasidagi burchak necha daraja?", a: ["0°", "7.5°", "15°", "10°"], c: 1 },
+        { q: "Suv muzlaganda hajmi qanday o'zgaradi?", a: ["Kengayadi", "Qisqaradi", "O'zgarmaydi", "Bug'lanadi"], c: 0 },
+        { q: "Ingliz tilida 'Ambiguous' so'zining ma'nosi nima?", a: ["Aniq", "Noaniq", "Katta", "Tezkor"], c: 1 },
+        { q: "Mantiqiy savol: Otasining ismi Ali, Alining o'g'lining ismi kim?", a: ["Ali", "Vali", "Ismi yo'q", "Ma'lumot kam"], c: 0 }
+    ];
+
+    let currentQ = 0;
+    let score = 80; // Boshlang'ich o'rtacha IQ
+    let timer;
+    let timeLeft = 120;
+
+    function startQuiz() {
+        document.getElementById('start-screen').classList.add('hidden');
+        document.getElementById('quiz-screen').classList.remove('hidden');
+        showQuestion();
+    }
+
+    function showQuestion() {
+        if (currentQ >= questions.length) return finishQuiz();
+        
+        clearInterval(timer);
+        timeLeft = 120;
+        updateTimerDisplay();
+        startTimer();
+
+        let q = questions[currentQ];
+        document.getElementById('q-text').innerText = q.q;
+        document.getElementById('q-num').innerText = currentQ + 1;
+        
+        let optDiv = document.getElementById('q-options');
+        optDiv.innerHTML = "";
+        q.a.forEach((opt, i) => {
+            optDiv.innerHTML += `<button class="opt-btn" onclick="checkAnswer(${i})">${opt}</button>`;
+        });
+    }
+
+    function startTimer() {
+        timer = setInterval(() => {
+            timeLeft--;
+            updateTimerDisplay();
+            if (timeLeft <= 0) {
+                checkAnswer(-1); 
+            }
+        }, 1000);
+    }
+
+    function updateTimerDisplay() {
+        let min = Math.floor(timeLeft / 60);
+        let sec = timeLeft % 60;
+        document.getElementById('time').innerText = `${min < 10 ? '0'+min : min}:${sec < 10 ? '0'+sec : sec}`;
+    }
+
+    function checkAnswer(idx) {
+        clearInterval(timer);
+        let feedback = document.getElementById('feedback');
+        let isCorrect = idx === questions[currentQ].c;
+
+        if (isCorrect) {
+            score += 10;
+            feedback.innerHTML = `<div class="circle correct">✓</div>`;
+        } else {
+            score -= 5;
+            feedback.innerHTML = `<div class="circle wrong">✕</div>`;
+        }
+
+        feedback.style.display = 'block';
+        
+        setTimeout(() => {
+            feedback.style.display = 'none';
+            currentQ++;
+            showQuestion();
+        }, 1000);
+    }
+
+    function finishQuiz() {
+        document.getElementById('quiz-screen').classList.add('hidden');
+        document.getElementById('result-screen').classList.remove('hidden');
+        document.getElementById('final-iq').innerText = score;
+        
+        let msg = "";
+        if (score > 130) msg = "Siz daho (Genius) darajasidasiz!";
+        else if (score > 110) msg = "Sizning aqlingiz juda yuqori!";
+        else msg = "Yaxshi, lekin mantiq ustida ko'proq ishlash kerak.";
+        document.getElementById('iq-msg').innerText = msg;
+    }
+</script>
+
+</body>
+</html>
+
