@@ -1,121 +1,135 @@
-const questions = {
+// 1. Ma'lumotlar bazasi
+const quizDatabase = {
     math: [
-        { q: "√144 + √81 = ?", a: "21", opt: ["20", "21", "22", "19"] },
-        { q: "5x + 10 = 50, x = ?", a: "8", opt: ["6", "7", "8", "9"] }
+        { q: "√625 + 25 = ?", a: "50", opts: ["45", "50", "55", "60"] },
+        { q: "x^2 = 81, x = ?", a: "9", opts: ["7", "8", "9", "10"] },
+        { q: "15 * 4 - 10 = ?", a: "50", opts: ["40", "50", "60", "70"] }
     ],
     phys: [
-        { q: "Nyuton qaysi kuch birligi?", a: "Kuch", opt: ["Energiya", "Kuch", "Bosim", "Tezlik"] }
+        { q: "Yorug'lik tezligi (c) qancha?", a: "300k km/s", opts: ["150k km/s", "300k km/s", "500k km/s", "1 mln km/s"] },
+        { q: "E=mc^2 kimning formulasi?", a: "Eynshteyn", opts: ["Nyuton", "Eynshteyn", "Tesla", "Bor"] }
     ],
     eng: [
-        { q: "Opposite of 'Hot'?", a: "Cold", opt: ["Warm", "Cold", "Ice", "Sun"] }
+        { q: "Past form of 'Write'?", a: "Wrote", opts: ["Written", "Wrote", "Writes", "Writing"] },
+        { q: "Opposite of 'Weak'?", a: "Strong", opts: ["Small", "Strong", "Hard", "Fast"] }
     ],
     logic: [
-        { q: "Daraxtda 10 qush bor, 1 tasi otildi. Nechtasi qoldi?", a: "0", opt: ["9", "1", "0", "8"] }
+        { q: "Qaysi kalla gapirmaydi?", a: "Qovoq kalla", opts: ["Katta kalla", "Qovoq kalla", "Olim kalla", "Aqlli kalla"] },
+        { q: "9-qavatdan tashlangan tuxum sinmadi. Nega?", a: "Polda tushdi", opts: ["Pishgan edi", "Polda tushdi", "Siniq edi", "Hech qachon sinmaydi"] }
     ]
 };
 
-const langData = {
-    uz: { title: "GALAKTIKA IQ", login: "Davom etish uchun tizimga kiring", select: "Yo'nalishni tanlang", settings: "Sozlamalar" },
-    en: { title: "GALAXY IQ", login: "Sign in to continue", select: "Select Subject", settings: "Settings" },
-    ru: { title: "ГАЛАКТИКА IQ", login: "Войдите, чтобы продолжить", select: "Выберите предмет", settings: "Настройки" }
+// 2. Tillar lug'ati
+const dictionary = {
+    uz: { mainT: "GALAKTIKA IQ", logD: "Koinot bo'ylab sayohatni boshlash uchun kiring", subjT: "Yo'nalishni tanlang", settings: "SOZLAMALAR" },
+    en: { mainT: "GALAXY IQ", logD: "Log in to start your space journey", subjT: "Choose Category", settings: "SETTINGS" },
+    ru: { mainT: "ГАЛАКТИКА IQ", logD: "Войдите, чтобы начать путешествие", subjT: "Выберите категорию", settings: "НАСТРОЙКИ" }
 };
 
-let currentSubj = [];
-let qIdx = 0;
-let score = 100;
-let timer;
-let timeLeft = 120;
+// 3. O'zgaruvchilar
+let currentCategory = [];
+let qIndex = 0;
+let iqScore = 100;
+let time = 120;
+let timerInterval;
 
+// 4. Funksiyalar
 function toggleMenu() {
     document.getElementById('sidebar').classList.toggle('active');
 }
 
-function changeLang(lang) {
-    const d = langData[lang];
-    document.getElementById('main-title').innerText = d.title;
-    document.getElementById('login-text').innerText = d.login;
-    document.getElementById('select-text').innerText = d.select;
-    document.getElementById('settings-title').innerText = d.settings;
+function changeLang(l) {
+    const lang = dictionary[l];
+    document.getElementById('main-title').innerText = lang.mainT;
+    document.getElementById('login-desc').innerText = lang.logD;
+    document.getElementById('subject-title').innerText = lang.subjT;
+    document.getElementById('side-title').innerText = lang.settings;
     toggleMenu();
 }
 
-function enterSite() {
+function enterApp() {
     document.getElementById('login-screen').classList.add('hidden');
-    document.getElementById('home-screen').classList.remove('hidden');
+    document.getElementById('subject-screen').classList.remove('hidden');
 }
 
-function selectSubject(s) {
-    currentSubj = questions[s];
-    document.getElementById('home-screen').classList.add('hidden');
+function startTest(cat) {
+    currentCategory = quizDatabase[cat];
+    document.getElementById('subject-screen').classList.add('hidden');
     document.getElementById('quiz-screen').classList.remove('hidden');
+    qIndex = 0;
+    iqScore = 100;
+    loadQuestion();
     startTimer();
-    renderQuestion();
 }
 
 function startTimer() {
-    timer = setInterval(() => {
-        timeLeft--;
-        let m = Math.floor(timeLeft / 60);
-        let s = timeLeft % 60;
-        document.getElementById('time').innerText = `${m}:${s < 10 ? '0'+s : s}`;
-        if(timeLeft <= 0) endTest();
+    timerInterval = setInterval(() => {
+        time--;
+        let m = Math.floor(time / 60);
+        let s = time % 60;
+        document.getElementById('timer').innerText = `${m}:${s < 10 ? '0'+s : s}`;
+        if(time <= 0) finishGame();
     }, 1000);
 }
 
-function renderQuestion() {
-    const q = currentSubj[qIdx];
-    document.getElementById('question-text').innerText = q.q;
-    const optDiv = document.getElementById('options');
-    optDiv.innerHTML = '';
-    q.opt.forEach(o => {
-        const btn = document.createElement('button');
-        btn.className = 'subj-btn';
-        btn.innerText = o;
-        btn.onclick = () => check(o);
-        optDiv.appendChild(btn);
+function loadQuestion() {
+    const data = currentCategory[qIndex];
+    document.getElementById('question-text').innerText = data.q;
+    const box = document.getElementById('options-box');
+    box.innerHTML = '';
+    
+    data.opts.forEach(opt => {
+        const b = document.createElement('button');
+        b.className = 'opt-btn';
+        b.innerText = opt;
+        b.onclick = () => checkAnswer(opt);
+        box.appendChild(b);
     });
 }
 
-function check(ans) {
-    const correct = currentSubj[qIdx].a;
-    const feedback = document.getElementById('feedback');
-    if(ans === correct) {
-        score += 15;
-        feedback.innerHTML = '✔';
-        feedback.style.background = '#2ecc71';
-        playSound(880);
+function checkAnswer(userAns) {
+    const correct = currentCategory[qIndex].a;
+    const status = document.getElementById('status-icon');
+    
+    if(userAns === correct) {
+        iqScore += 10;
+        status.innerHTML = '✔';
+        status.className = 'status-anim correct-pop';
+        playTone(800);
     } else {
-        score -= 10;
-        feedback.innerHTML = '✖';
-        feedback.style.background = '#e74c3c';
-        playSound(220);
+        iqScore -= 15;
+        status.innerHTML = '✖';
+        status.className = 'status-anim wrong-pop';
+        playTone(200);
     }
-    document.getElementById('iq-count').innerText = score;
+    
+    document.getElementById('iq-level').innerText = iqScore;
+    
     setTimeout(() => {
-        feedback.innerHTML = '';
-        feedback.style.background = 'transparent';
-        qIdx++;
-        if(qIdx < currentSubj.length) renderQuestion();
-        else endTest();
+        status.className = 'status-anim';
+        status.innerHTML = '';
+        qIndex++;
+        if(qIndex < currentCategory.length) loadQuestion();
+        else finishGame();
     }, 600);
 }
 
-function playSound(freq) {
-    const ctx = new AudioContext();
-    const osc = ctx.createOscillator();
-    const g = ctx.createGain();
-    osc.frequency.setValueAtTime(freq, ctx.currentTime);
+function playTone(freq) {
+    const actx = new (window.AudioContext || window.webkitAudioContext)();
+    const osc = actx.createOscillator();
+    const g = actx.createGain();
+    osc.frequency.setValueAtTime(freq, actx.currentTime);
     osc.connect(g);
-    g.connect(ctx.destination);
+    g.connect(actx.destination);
     osc.start();
-    g.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.5);
-    osc.stop(ctx.currentTime + 0.5);
+    g.gain.exponentialRampToValueAtTime(0.00001, actx.currentTime + 0.4);
+    osc.stop(actx.currentTime + 0.4);
 }
 
-function endTest() {
-    clearInterval(timer);
+function finishGame() {
+    clearInterval(timerInterval);
     document.getElementById('quiz-screen').classList.add('hidden');
     document.getElementById('result-screen').classList.remove('hidden');
-    document.getElementById('final-iq').innerText = score;
+    document.getElementById('total-iq').innerText = iqScore;
 }
 
