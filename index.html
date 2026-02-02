@@ -3,89 +3,50 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Galaktika IQ - Professional Platform</title>
+    <title>Galaktika IQ - Kirish</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="space-wrapper">
+    <div class="space-bg">
         <div class="stars"></div>
         <div class="twinkling"></div>
-        <div class="rocket">🚀</div>
-        <div class="ufo">🛸</div>
     </div>
 
-    <div id="sidebar" class="sidebar">
-        <div class="sidebar-header">
-            <h3 id="side-title">SOZLAMALAR</h3>
-            <button class="close-btn" onclick="toggleMenu()">×</button>
-        </div>
-        <div class="lang-selection">
-            <p id="select-lang-text">Tilni tanlang:</p>
-            <button class="lang-btn" onclick="changeLang('uz')">🇺🇿 O'zbek Tili</button>
-            <button class="lang-btn" onclick="changeLang('en')">🇺🇸 English</button>
-            <button class="lang-btn" onclick="changeLang('ru')">🇷🇺 Русский язык</button>
-        </div>
-        <div class="sidebar-footer">
-            <p>v2.0 Beta</p>
-        </div>
-    </div>
-
-    <nav class="top-nav">
+    <div class="menu-wrapper">
         <div class="hamburger" onclick="toggleMenu()">
             <span></span><span></span><span></span>
         </div>
-    </nav>
+        <div id="sidebar" class="sidebar">
+            <h3>TILNI TANLANG</h3>
+            <button onclick="changeLang('uz')">🇺🇿 O'zbek Tili</button>
+            <button onclick="changeLang('en')">🇺🇸 English</button>
+            <button onclick="changeLang('ru')">🇷🇺 Русский язык</button>
+        </div>
+    </div>
 
     <div class="main-container">
-        <section id="login-screen" class="glass-card active">
-            <h1 id="main-title" class="neon-text">GALAKTIKA IQ</h1>
-            <p id="login-desc">Koinot bo'ylab sayohatni boshlash uchun kiring</p>
-            <button class="google-auth-btn" onclick="enterApp()">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" alt="G">
-                <span>Google orqali kirish</span>
-            </button>
-        </section>
-
-        <section id="subject-screen" class="glass-card hidden">
-            <h2 id="subject-title">Yo'nalishni tanlang</h2>
-            <div class="subject-grid">
-                <button class="subj-card" onclick="startTest('math')">
-                    <span class="icon">🧮</span>
-                    <span class="name" id="math-name">Matematika</span>
+        <div class="auth-card">
+            <h1 class="neon-title">KIRISH</h1>
+            <div class="auth-buttons">
+                <button class="auth-btn google" onclick="enterApp()">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg"> Google orqali kirish
                 </button>
-                <button class="subj-card" onclick="startTest('phys')">
-                    <span class="icon">⚡</span>
-                    <span class="name" id="phys-name">Fizika</span>
+                <button class="auth-btn facebook" onclick="enterApp()">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/0/05/Facebook_Logo_(2019).png"> Facebook orqali kirish
                 </button>
-                <button class="subj-card" onclick="startTest('eng')">
-                    <span class="icon">🇬🇧</span>
-                    <span class="name" id="eng-name">Ingliz tili</span>
+                <button class="auth-btn whatsapp" onclick="enterApp()">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg"> WhatsApp orqali kirish
                 </button>
-                <button class="subj-card" onclick="startTest('logic')">
-                    <span class="icon">🧠</span>
-                    <span class="name" id="logic-name">Mantiq</span>
-                </button>
+                <div class="phone-input-group">
+                    <input type="tel" placeholder="+998 90 123 45 67">
+                    <button class="auth-btn phone" onclick="enterApp()">Nomer orqali kirish</button>
+                </div>
             </div>
-        </section>
-
-        <section id="quiz-screen" class="glass-card hidden">
-            <div class="quiz-header">
-                <div class="timer-ring">⏱ <span id="timer">02:00</span></div>
-                <div class="iq-badge">IQ: <span id="iq-level">100</span></div>
-            </div>
-            <div id="status-icon" class="status-anim"></div>
-            <h3 id="question-text" class="question">Yuklanmoqda...</h3>
-            <div id="options-box" class="options-container"></div>
-        </section>
-
-        <section id="result-screen" class="glass-card hidden">
-            <h2 id="result-title">NATIJA</h2>
-            <div class="final-score" id="total-iq">100</div>
-            <p id="rank-text">Sizning IQ darajangiz o'rtacha</p>
-            <button class="retry-btn" onclick="location.reload()">QAYTA BOSHLASH</button>
-        </section>
+        </div>
     </div>
+
+    <div id="quiz-part" class="hidden">
+        </div>
 
     <script src="index.js"></script>
 </body>
